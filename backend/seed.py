@@ -1,14 +1,15 @@
-from app import create_app
-from app.extensions import db
-from app.models import Destination, Activity
+from app.database import Base, SessionLocal, engine
+from app.models import Activity, Destination
 
 
-app = create_app()
+Base.metadata.create_all(bind=engine)
 
+db = SessionLocal()
 
-with app.app_context():
-    Activity.query.delete()
-    Destination.query.delete()
+try:
+    db.query(Activity).delete()
+    db.query(Destination).delete()
+    db.commit()
 
     destinations = [
         Destination(
@@ -85,8 +86,8 @@ with app.app_context():
         ),
     ]
 
-    db.session.add_all(destinations)
-    db.session.commit()
+    db.add_all(destinations)
+    db.flush()
 
     activities = [
         Activity(
@@ -131,9 +132,12 @@ with app.app_context():
         ),
     ]
 
-    db.session.add_all(activities)
-    db.session.commit()
+    db.add_all(activities)
+    db.commit()
 
-    print("Wanderly database seeded successfully 🌍")
+    print("Wanderly FastAPI database seeded successfully 🌍")
     print(f"{len(destinations)} destinations added")
     print(f"{len(activities)} activities added")
+
+finally:
+    db.close()

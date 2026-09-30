@@ -1,30 +1,27 @@
-from app.extensions import db
+from sqlalchemy import Column, Float, ForeignKey, Integer, String, Text
+from sqlalchemy.orm import relationship
+
+from app.database import Base
 
 
-class Activity(db.Model):
+class Activity(Base):
     __tablename__ = "activities"
 
-    id = db.Column(db.Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, index=True)
 
-    destination_id = db.Column(
-        db.Integer,
-        db.ForeignKey("destinations.id"),
+    destination_id = Column(
+        Integer,
+        ForeignKey("destinations.id"),
         nullable=False,
     )
 
-    name = db.Column(db.String(150), nullable=False)
-    category = db.Column(db.String(50))
-    description = db.Column(db.Text)
-    estimated_cost = db.Column(db.Float, default=0)
-    duration = db.Column(db.String(50))
+    name = Column(String(150), nullable=False)
+    category = Column(String(50))
+    description = Column(Text)
+    estimated_cost = Column(Float, default=0)
+    duration = Column(String(50))
 
-    def to_dict(self):
-        return {
-            "id": self.id,
-            "destinationId": self.destination_id,
-            "name": self.name,
-            "category": self.category,
-            "description": self.description,
-            "estimatedCost": self.estimated_cost,
-            "duration": self.duration,
-        }
+    destination = relationship(
+        "Destination",
+        back_populates="activities",
+    )

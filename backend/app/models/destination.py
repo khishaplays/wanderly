@@ -1,26 +1,23 @@
-from app.extensions import db
+from sqlalchemy import Column, Float, Integer, String, Text
+from sqlalchemy.orm import relationship
+
+from app.database import Base
 
 
-class Destination(db.Model):
+class Destination(Base):
     __tablename__ = "destinations"
 
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(150), nullable=False)
-    slug = db.Column(db.String(150), unique=True, nullable=False)
-    county = db.Column(db.String(100), nullable=False)
-    region = db.Column(db.String(100))
-    description = db.Column(db.Text, nullable=False)
-    tagline = db.Column(db.String(255))
-    estimated_daily_cost = db.Column(db.Float)
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String(150), nullable=False)
+    slug = Column(String(150), unique=True, nullable=False, index=True)
+    county = Column(String(100), nullable=False)
+    region = Column(String(100))
+    description = Column(Text, nullable=False)
+    tagline = Column(String(255))
+    estimated_daily_cost = Column(Float)
 
-    def to_dict(self):
-        return {
-            "id": self.id,
-            "name": self.name,
-            "slug": self.slug,
-            "county": self.county,
-            "region": self.region,
-            "description": self.description,
-            "tagline": self.tagline,
-            "estimatedDailyCost": self.estimated_daily_cost,
-        }
+    activities = relationship(
+        "Activity",
+        back_populates="destination",
+        cascade="all, delete-orphan",
+    )

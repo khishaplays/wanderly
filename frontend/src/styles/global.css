@@ -1,0 +1,977 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;1,600&display=swap");
+
+:root {
+  --cream: #fffaf4;
+  --paper: #ffffff;
+
+  --blush: #f7dce0;
+  --lavender: #e0daf6;
+  --sage: #d5e8dc;
+  --sky: #d7ebf6;
+
+  --rose: #bc849a;
+  --ink: #30303c;
+  --muted: #77727d;
+  --border: #ebe5df;
+
+  font-family: "DM Sans", sans-serif;
+  color: var(--ink);
+  background: var(--cream);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background: var(--cream);
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.navbar {
+  height: 76px;
+  padding: 0 6%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(255, 250, 244, 0.92);
+}
+
+.brand {
+  font-family: "Playfair Display", serif;
+  font-size: 1.8rem;
+  font-weight: 600;
+}
+
+.brand span {
+  color: var(--rose);
+}
+
+.nav-links {
+  display: flex;
+  gap: 32px;
+  color: var(--muted);
+}
+
+.nav-links a {
+  transition: color 0.2s ease;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+  color: var(--ink);
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+button {
+  border: none;
+  cursor: pointer;
+}
+
+.login-button {
+  padding: 10px 16px;
+  background: transparent;
+  color: var(--ink);
+}
+
+.primary-button {
+  padding: 11px 19px;
+  border-radius: 999px;
+  background: var(--ink);
+  color: white;
+}
+
+.placeholder-page {
+  min-height: calc(100vh - 76px);
+  padding: 12vh 8%;
+}
+
+.eyebrow {
+  margin-bottom: 18px;
+  color: var(--rose);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+}
+
+.placeholder-page h1 {
+  max-width: 800px;
+  margin: 0;
+  font-family: "Playfair Display", serif;
+  font-size: clamp(3rem, 7vw, 6.5rem);
+  line-height: 0.98;
+}
+
+.placeholder-page h1 span {
+  color: var(--rose);
+  font-style: italic;
+}
+
+.placeholder-page > p:last-child {
+  max-width: 600px;
+  margin-top: 28px;
+  color: var(--muted);
+  font-size: 1.1rem;
+  line-height: 1.8;
+}
+
+@media (max-width: 800px) {
+  .navbar {
+    padding: 0 5%;
+  }
+
+  .nav-links {
+    display: none;
+  }
+
+  .login-button {
+    display: none;
+  }
+
+  .placeholder-page {
+    padding: 10vh 6%;
+  }
+}
+/* ---------- Wanderly Home ---------- */
+
+.hero {
+  min-height: calc(100vh - 76px);
+  padding: 70px 7%;
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  align-items: center;
+  gap: 60px;
+  overflow: hidden;
+}
+
+.hero-content h1 {
+  margin: 0;
+  font-family: "Playfair Display", serif;
+  font-size: clamp(3.8rem, 7vw, 7rem);
+  line-height: 0.94;
+  letter-spacing: -0.04em;
+}
+
+.hero-content h1 span {
+  color: var(--rose);
+  font-style: italic;
+}
+
+.hero-description {
+  max-width: 570px;
+  margin: 30px 0;
+  color: var(--muted);
+  font-size: 1.08rem;
+  line-height: 1.8;
+}
+
+.hero-actions {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+
+.hero-primary {
+  padding: 15px 24px;
+  border-radius: 999px;
+  background: var(--ink);
+  color: white;
+  font-weight: 600;
+}
+
+.hero-secondary {
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.hero-art {
+  position: relative;
+  min-height: 520px;
+  border-radius: 38px;
+  background:
+    linear-gradient(
+      160deg,
+      var(--sky),
+      var(--lavender) 55%,
+      var(--blush)
+    );
+}
+
+.sun {
+  position: absolute;
+  width: 190px;
+  height: 190px;
+  top: 55px;
+  right: 55px;
+  border-radius: 50%;
+  background: #ffdca8;
+  opacity: 0.8;
+}
+
+.travel-card {
+  position: absolute;
+  width: 230px;
+  padding: 18px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  border: 1px solid rgba(255,255,255,.7);
+  border-radius: 22px;
+  background: rgba(255,255,255,.84);
+  box-shadow: 0 18px 50px rgba(48,48,60,.08);
+  backdrop-filter: blur(10px);
+}
+
+.travel-card > span {
+  font-size: 2rem;
+}
+
+.travel-card small {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--rose);
+  font-size: .62rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+}
+
+.travel-card strong {
+  display: block;
+}
+
+.card-one {
+  top: 100px;
+  left: 40px;
+  transform: rotate(-5deg);
+}
+
+.card-two {
+  top: 245px;
+  right: 30px;
+  transform: rotate(5deg);
+}
+
+.card-three {
+  bottom: 50px;
+  left: 75px;
+  transform: rotate(-2deg);
+}
+
+.hero-note {
+  position: absolute;
+  right: 25px;
+  bottom: 25px;
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: var(--cream);
+  font-size: .75rem;
+}
+
+.hero-note span {
+  color: var(--rose);
+}
+
+.planning-section,
+.featured-section {
+  padding: 100px 7%;
+}
+
+.planning-section {
+  background: white;
+}
+
+.section-heading {
+  margin-bottom: 45px;
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 40px;
+}
+
+.section-heading h2 {
+  margin: 0;
+  font-family: "Playfair Display", serif;
+  font-size: clamp(2.3rem, 4vw, 4rem);
+}
+
+.section-heading > p {
+  max-width: 380px;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.travel-style-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.style-card {
+  position: relative;
+  min-height: 205px;
+  padding: 28px;
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.style-card:nth-child(4n + 1) {
+  background: var(--sky);
+}
+
+.style-card:nth-child(4n + 2) {
+  background: var(--sage);
+}
+
+.style-card:nth-child(4n + 3) {
+  background: var(--blush);
+}
+
+.style-card:nth-child(4n + 4) {
+  background: var(--lavender);
+}
+
+.style-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 18px 40px rgba(48,48,60,.08);
+}
+
+.style-icon {
+  font-size: 2rem;
+}
+
+.style-card h3 {
+  margin: 22px 0 7px;
+  font-family: "Playfair Display", serif;
+  font-size: 1.5rem;
+}
+
+.style-card p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.card-arrow {
+  position: absolute;
+  right: 25px;
+  bottom: 23px;
+}
+
+.destination-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+}
+
+.destination-card {
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 28px;
+  background: white;
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.destination-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 45px rgba(48,48,60,.09);
+}
+
+.destination-image {
+  position: relative;
+  height: 260px;
+  display: grid;
+  place-items: center;
+}
+
+.destination-image > span {
+  font-size: 5rem;
+}
+
+.image-1 {
+  background: linear-gradient(145deg, #dce6bf, #e8d2a6);
+}
+
+.image-2 {
+  background: linear-gradient(145deg, #cce9ef, #f4e3c1);
+}
+
+.image-3 {
+  background: linear-gradient(145deg, #d7d9ec, #efd7cf);
+}
+
+.destination-category {
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  padding: 7px 12px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.86);
+  font-size: .72rem;
+  font-weight: 600;
+}
+
+.destination-content {
+  padding: 24px;
+}
+
+.destination-location {
+  color: var(--rose);
+  font-size: .72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+}
+
+.destination-content h3 {
+  margin: 8px 0;
+  font-family: "Playfair Display", serif;
+  font-size: 1.8rem;
+}
+
+.destination-content p {
+  color: var(--muted);
+}
+
+.destination-footer {
+  margin-top: 24px;
+  padding-top: 18px;
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  border-top: 1px solid var(--border);
+  font-size: .8rem;
+  font-weight: 600;
+}
+
+.text-link {
+  font-weight: 600;
+}
+
+@media (max-width: 900px) {
+  .hero {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-art {
+    min-height: 430px;
+  }
+
+  .travel-style-grid,
+  .destination-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .hero {
+    padding: 55px 6%;
+  }
+
+  .hero-art {
+    display: none;
+  }
+
+  .section-heading {
+    align-items: start;
+    flex-direction: column;
+  }
+
+  .travel-style-grid,
+  .destination-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .planning-section,
+  .featured-section {
+    padding: 70px 6%;
+  }
+}
+/* ---------- Explore Kenya ---------- */
+
+.explore-hero {
+  padding: 85px 7% 65px;
+  background:
+    radial-gradient(circle at 85% 20%, var(--blush), transparent 25%),
+    var(--cream);
+}
+
+.explore-hero h1 {
+  margin: 0;
+  font-family: "Playfair Display", serif;
+  font-size: clamp(3.3rem, 6vw, 6rem);
+  line-height: 0.98;
+}
+
+.explore-hero h1 span {
+  color: var(--rose);
+  font-style: italic;
+}
+
+.explore-hero > p:last-of-type {
+  max-width: 570px;
+  margin: 24px 0 32px;
+  color: var(--muted);
+  line-height: 1.8;
+}
+
+.search-box {
+  width: min(620px, 100%);
+  padding: 8px 8px 8px 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: white;
+  box-shadow: 0 12px 35px rgba(48, 48, 60, 0.06);
+}
+
+.search-box > span {
+  color: var(--rose);
+  font-size: 1.3rem;
+}
+
+.search-box input {
+  width: 100%;
+  padding: 12px 5px;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--ink);
+}
+
+.explore-content {
+  padding: 55px 7% 100px;
+  background: white;
+}
+
+.filter-header {
+  margin-bottom: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 30px;
+}
+
+.category-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+}
+
+.filter-button {
+  padding: 9px 16px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: white;
+  color: var(--muted);
+}
+
+.filter-button:hover {
+  background: var(--cream);
+}
+
+.active-filter {
+  border-color: var(--ink);
+  background: var(--ink);
+  color: white;
+}
+
+.active-filter:hover {
+  background: var(--ink);
+}
+
+.filter-header > p {
+  flex-shrink: 0;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.explore-content .destination-content p {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-height: 1.6;
+}
+
+.empty-state {
+  padding: 100px 20px;
+  text-align: center;
+}
+
+.empty-state > span {
+  font-size: 3rem;
+}
+
+.empty-state h2 {
+  margin-bottom: 5px;
+  font-family: "Playfair Display", serif;
+  font-size: 2rem;
+}
+
+.empty-state p {
+  color: var(--muted);
+}
+
+.empty-state button {
+  margin-top: 15px;
+  padding: 11px 18px;
+  border-radius: 999px;
+  background: var(--ink);
+  color: white;
+}
+
+@media (max-width: 700px) {
+  .explore-hero {
+    padding: 60px 6% 50px;
+  }
+
+  .explore-content {
+    padding: 40px 6% 70px;
+  }
+
+  .filter-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+.destination-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 18px;
+}
+
+.destination-tags span {
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: var(--cream);
+  color: var(--muted);
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+.destination-emoji {
+  font-size: 5rem;
+}
+/* ---------- Destination Details ---------- */
+
+.destination-detail-hero {
+  padding: 65px 7%;
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  align-items: center;
+  gap: 60px;
+  background: var(--cream);
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 45px;
+  color: var(--muted);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.destination-detail-copy h1 {
+  margin: 5px 0 10px;
+  font-family: "Playfair Display", serif;
+  font-size: clamp(4rem, 8vw, 7.5rem);
+  line-height: 0.95;
+}
+
+.destination-tagline {
+  margin: 0 0 25px;
+  color: var(--muted);
+  font-family: "Playfair Display", serif;
+  font-size: 1.35rem;
+  font-style: italic;
+}
+
+.destination-detail-art {
+  min-height: 390px;
+  display: grid;
+  place-items: center;
+  border-radius: 35px;
+  background:
+    linear-gradient(
+      145deg,
+      var(--sage),
+      var(--sky),
+      var(--blush)
+    );
+}
+
+.destination-detail-art span {
+  font-size: clamp(6rem, 12vw, 10rem);
+}
+
+.destination-info {
+  padding: 80px 7% 110px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 330px;
+  align-items: start;
+  gap: 70px;
+  background: white;
+}
+
+.destination-section {
+  margin-bottom: 85px;
+}
+
+.destination-section h2 {
+  margin: 5px 0 20px;
+  font-family: "Playfair Display", serif;
+  font-size: clamp(2rem, 4vw, 3.2rem);
+}
+
+.destination-description {
+  max-width: 760px;
+  color: var(--muted);
+  font-size: 1.08rem;
+  line-height: 1.9;
+}
+
+.compact-heading {
+  margin-bottom: 30px;
+}
+
+.activity-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+}
+
+.activity-card {
+  padding: 24px;
+  display: flex;
+  gap: 18px;
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  background: var(--cream);
+}
+
+.activity-icon {
+  flex-shrink: 0;
+  font-size: 2rem;
+}
+
+.activity-category {
+  color: var(--rose);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.activity-card h3 {
+  margin: 6px 0 8px;
+  font-size: 1rem;
+}
+
+.activity-card p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+
+.activity-meta {
+  margin-top: 18px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 10px;
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
+.coming-soon {
+  padding: 25px;
+  display: flex;
+  gap: 18px;
+  border: 1px dashed var(--border);
+  border-radius: 20px;
+}
+
+.coming-soon > span {
+  color: var(--rose);
+  font-size: 1.5rem;
+}
+
+.coming-soon h3,
+.coming-soon p {
+  margin: 0;
+}
+
+.coming-soon p {
+  margin-top: 5px;
+  color: var(--muted);
+}
+
+.visitor-tip-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.visitor-tip {
+  padding: 22px;
+  border-radius: 20px;
+  background: var(--cream);
+}
+
+.visitor-tip > span {
+  font-size: 1.6rem;
+}
+
+.visitor-tip h3 {
+  margin: 15px 0 5px;
+  font-size: 0.9rem;
+}
+
+.visitor-tip p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.trip-panel {
+  position: sticky;
+  top: 105px;
+  padding: 28px;
+  border: 1px solid var(--border);
+  border-radius: 28px;
+  background: var(--cream);
+  box-shadow: 0 20px 50px rgba(48, 48, 60, 0.07);
+}
+
+.trip-panel h2 {
+  margin: 5px 0 25px;
+  font-family: "Playfair Display", serif;
+  font-size: 2rem;
+}
+
+.cost-block {
+  padding: 20px 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.cost-block span,
+.cost-block small {
+  display: block;
+  color: var(--muted);
+}
+
+.cost-block strong {
+  display: block;
+  margin: 7px 0 2px;
+  font-size: 1.6rem;
+}
+
+.plan-trip-button,
+.save-button {
+  width: 100%;
+  padding: 13px;
+  border-radius: 999px;
+  font-weight: 600;
+}
+
+.plan-trip-button {
+  margin-top: 22px;
+  background: var(--ink);
+  color: white;
+}
+
+.save-button {
+  margin-top: 9px;
+  border: 1px solid var(--border);
+  background: white;
+  color: var(--ink);
+}
+
+.estimate-note {
+  margin: 16px 5px 0;
+  color: var(--muted);
+  font-size: 0.7rem;
+  line-height: 1.5;
+}
+
+.destination-not-found {
+  min-height: calc(100vh - 76px);
+  padding: 100px 7%;
+  text-align: center;
+}
+
+.destination-not-found > span {
+  font-size: 4rem;
+}
+
+.destination-not-found h1 {
+  font-family: "Playfair Display", serif;
+  font-size: 3rem;
+}
+
+.destination-not-found p {
+  margin-bottom: 30px;
+  color: var(--muted);
+}
+
+@media (max-width: 900px) {
+  .destination-detail-hero,
+  .destination-info {
+    grid-template-columns: 1fr;
+  }
+
+  .trip-panel {
+    position: static;
+  }
+}
+
+@media (max-width: 650px) {
+  .destination-detail-hero,
+  .destination-info {
+    padding-left: 6%;
+    padding-right: 6%;
+  }
+
+  .destination-detail-art {
+    min-height: 280px;
+  }
+
+  .activity-grid,
+  .visitor-tip-grid {
+    grid-template-columns: 1fr;
+  }
+}

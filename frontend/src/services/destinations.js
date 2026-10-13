@@ -1,6 +1,9 @@
+
+const API_BASE_URL = import.meta.env.VITE_API_URL || "";
+
 // Fetch all destinations for the Explore page
 export async function getDestinations(signal) {
-  const response = await fetch("/api/destinations", {
+  const response = await fetch(`${API_BASE_URL}/api/destinations`, {
     signal,
   });
 
@@ -22,7 +25,7 @@ export async function getDestinations(signal) {
 // Fetch one destination and its activities
 export async function getDestination(id, signal) {
   const response = await fetch(
-    `/api/destinations/${encodeURIComponent(id)}`,
+    `${API_BASE_URL}/api/destinations/${encodeURIComponent(id)}`,
     { signal }
   );
 

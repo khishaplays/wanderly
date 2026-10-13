@@ -1,12 +1,101 @@
+import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import { getDestination } from "../services/destinations";
 
-import { destinations } from "../data/destinations";
-import { activities } from "../data/activities";
+const destinationStyles = {
+  "maasai-mara": {
+    emoji: "🦁",
+    categories: ["Safari", "Wildlife", "Culture"],
+  },
+  "diani-beach": {
+    emoji: "🏖️",
+    categories: ["Beach", "Adventure"],
+  },
+  nairobi: {
+    emoji: "🏙️",
+    categories: ["City", "Culture", "Nightlife", "Wildlife"],
+  },
+  lamu: {
+    emoji: "⛵",
+    categories: ["Culture", "Beach", "History"],
+  },
+  naivasha: {
+    emoji: "🌿",
+    categories: ["Nature", "Adventure", "Wildlife"],
+  },
+  mombasa: {
+    emoji: "🌊",
+    categories: ["Beach", "Culture", "Food"],
+  },
+};
+
+const activityEmojis = {
+  Safari: "🦁",
+  Culture: "🎭",
+  Beach: "🏖️",
+  Adventure: "🤿",
+  Wildlife: "🦒",
+};
 
 function DestinationDetails() {
   const { id } = useParams();
 
-  const destination = destinations.find((item) => item.id === Number(id));
+  const [destination, setDestination] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    async function loadDestination() {
+      try {
+        setLoading(true);
+        setError("");
+        setDestination(null);
+
+        const data = await getDestination(id, controller.signal);
+
+        if (!controller.signal.aborted) {
+          setDestination(data);
+        }
+      } catch (err) {
+        if (!controller.signal.aborted) {
+          setError(err.message);
+        }
+      } finally {
+        if (!controller.signal.aborted) {
+          setLoading(false);
+        }
+      }
+    }
+
+    loadDestination();
+
+    return () => controller.abort();
+  }, [id]);
+
+  if (loading) {
+    return (
+      <section className="destination-not-found" role="status">
+        <span>🌍</span>
+        <h1>Finding your next adventure...</h1>
+        <p>Loading destination details.</p>
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section className="destination-not-found" role="alert">
+        <span>⚠️</span>
+        <h1>We couldn't load this destination.</h1>
+        <p>{error}</p>
+        <Link to="/explore" className="hero-primary">
+          Back to Explore
+        </Link>
+      </section>
+    );
+  }
 
   if (!destination) {
     return (
@@ -14,7 +103,6 @@ function DestinationDetails() {
         <span>🧭</span>
         <h1>We couldn't find that place.</h1>
         <p>The destination may not exist in Wanderly yet.</p>
-
         <Link to="/explore" className="hero-primary">
           Explore Kenya
         </Link>
@@ -22,9 +110,14 @@ function DestinationDetails() {
     );
   }
 
-  const destinationActivities = activities.filter(
-    (activity) => activity.destinationId === destination.id,
-  );
+  const style = destinationStyles[destination.slug] ?? {
+    emoji: "📍",
+    categories: [],
+  };
+
+  const destinationActivities = destination.activities ?? [];
+
+  const dailyCost = destination.estimated_daily_cost;
 
   return (
     <div className="destination-page">
@@ -43,14 +136,14 @@ function DestinationDetails() {
           <p className="destination-tagline">{destination.tagline}</p>
 
           <div className="destination-tags">
-            {destination.categories.map((category) => (
+            {style.categories.map((category) => (
               <span key={category}>{category}</span>
             ))}
           </div>
         </div>
 
         <div className="destination-detail-art">
-          <span>{destination.emoji}</span>
+          <span>{style.emoji}</span>
         </div>
       </section>
 
@@ -75,7 +168,9 @@ function DestinationDetails() {
               <div className="activity-grid">
                 {destinationActivities.map((activity) => (
                   <article className="activity-card" key={activity.id}>
-                    <div className="activity-icon">{activity.emoji}</div>
+                    <div className="activity-icon">
+                      {activityEmojis[activity.category] ?? "✨"}
+                    </div>
 
                     <div>
                       <span className="activity-category">
@@ -87,12 +182,14 @@ function DestinationDetails() {
                       <p>{activity.description}</p>
 
                       <div className="activity-meta">
-                        <span>⏱ {activity.duration}</span>
+                        <span>⏱ {activity.duration ?? "Flexible"}</span>
 
                         <span>
-                          {activity.estimatedCost === 0
-                            ? "Free"
-                            : `Est. KSh ${activity.estimatedCost.toLocaleString()}`}
+                          {activity.estimated_cost == null
+                            ? "Cost not available"
+                            : activity.estimated_cost === 0
+                              ? "Free"
+                              : `Est. KSh ${activity.estimated_cost.toLocaleString()}`}
                         </span>
                       </div>
                     </div>
@@ -102,7 +199,6 @@ function DestinationDetails() {
             ) : (
               <div className="coming-soon">
                 <span>✦</span>
-
                 <div>
                   <h3>More local experiences are coming.</h3>
                   <p>
@@ -149,7 +245,9 @@ function DestinationDetails() {
             <span>Estimated daily budget</span>
 
             <strong>
-              KSh {destination.estimatedDailyCost.toLocaleString()}
+              {dailyCost == null
+                ? "Not available"
+                : `KSh ${dailyCost.toLocaleString()}`}
             </strong>
 
             <small>per traveler / day</small>

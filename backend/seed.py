@@ -1,15 +1,15 @@
 from app.database import Base, SessionLocal, engine
 from app.models import Activity, Destination
 
-
-Base.metadata.create_all(bind=engine)
-
 db = SessionLocal()
 
 try:
-    db.query(Activity).delete()
-    db.query(Destination).delete()
-    db.commit()
+    existing = db.query(Destination).first()
+
+    if existing:
+        print("Destinations already exist. Skipping seed.")
+        raise SystemExit(0)
+
 
     destinations = [
         Destination(

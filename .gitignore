@@ -22,3 +22,6 @@ venv/
 # Database
 *.db
 backend/instance/
+# Local development backups
+frontend/src/styles/global.css.backup
+backend/migrations_flask_backup/

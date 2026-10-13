@@ -1,10 +1,12 @@
 from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, selectinload
 
 from app.database import get_db
 from app.models.destination import Destination
-from app.schemas.destination import DestinationResponse
-
+from app.schemas.destination import (
+    DestinationResponse,
+    DestinationDetailResponse,
+)
 
 router = APIRouter(
     prefix="/api/destinations",
@@ -17,13 +19,17 @@ def get_destinations(db: Session = Depends(get_db)):
     return db.query(Destination).all()
 
 
-@router.get("/{destination_id}", response_model=DestinationResponse)
+@router.get(
+    "/{destination_id}",
+    response_model=DestinationDetailResponse,
+)
 def get_destination(
     destination_id: int,
     db: Session = Depends(get_db),
 ):
     destination = (
         db.query(Destination)
+        .options(selectinload(Destination.activities))
         .filter(Destination.id == destination_id)
         .first()
     )

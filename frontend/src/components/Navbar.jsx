@@ -11,6 +11,7 @@ function Navbar() {
       <nav className="nav-links">
         <NavLink to="/">Home</NavLink>
         <NavLink to="/explore">Explore</NavLink>
+        <NavLink to="/counties">Discover Kenya</NavLink>
         <a href="#trips">My Trips</a>
       </nav>
 

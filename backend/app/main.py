@@ -5,6 +5,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.routers.destinations import router as destinations_router
+from app.routers.counties import router as counties_router
 
 
 app = FastAPI(
@@ -39,6 +40,7 @@ app.add_middleware(
 
 
 app.include_router(destinations_router)
+app.include_router(counties_router)
 
 
 @app.get("/")

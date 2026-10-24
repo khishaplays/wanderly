@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import "./counties.test.jsx";
 import { test } from "node:test";
 import { renderToStaticMarkup } from "react-dom/server";
 import { MemoryRouter } from "react-router-dom";

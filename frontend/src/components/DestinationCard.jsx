@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom";
 
+import { destinationPath, formatDailyCost } from "../utils/catalogue";
+
 function DestinationCard({ destination }) {
   const {
-    id,
     name,
     county,
     region,
@@ -13,11 +14,11 @@ function DestinationCard({ destination }) {
   } = destination;
 
   return (
-    <Link to={`/destinations/${id}`} className="destination-card">
+    <Link to={destinationPath(destination)} className="destination-card">
       <div className="destination-image">
         <span className="destination-emoji">{emoji}</span>
 
-        <span className="destination-category">{categories[0]}</span>
+        {categories.length > 0 && <span className="destination-category">{categories[0]}</span>}
       </div>
 
       <div className="destination-content">
@@ -36,7 +37,9 @@ function DestinationCard({ destination }) {
         </div>
 
         <div className="destination-footer">
-          <span>From KSh {estimatedDailyCost.toLocaleString()}/day</span>
+          <span>{estimatedDailyCost == null
+            ? "Price unavailable"
+            : `From ${formatDailyCost(estimatedDailyCost)}/day`}</span>
 
           <span>Explore →</span>
         </div>

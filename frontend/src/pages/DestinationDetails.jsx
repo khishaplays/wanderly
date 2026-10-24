@@ -1,33 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import { normalizeDestination, formatDailyCost } from "../utils/catalogue";
 import { getDestination } from "../services/destinations";
-
-const destinationStyles = {
-  "maasai-mara": {
-    emoji: "🦁",
-    categories: ["Safari", "Wildlife", "Culture"],
-  },
-  "diani-beach": {
-    emoji: "🏖️",
-    categories: ["Beach", "Adventure"],
-  },
-  nairobi: {
-    emoji: "🏙️",
-    categories: ["City", "Culture", "Nightlife", "Wildlife"],
-  },
-  lamu: {
-    emoji: "⛵",
-    categories: ["Culture", "Beach", "History"],
-  },
-  naivasha: {
-    emoji: "🌿",
-    categories: ["Nature", "Adventure", "Wildlife"],
-  },
-  mombasa: {
-    emoji: "🌊",
-    categories: ["Beach", "Culture", "Food"],
-  },
-};
 
 const activityEmojis = {
   Safari: "🦁",
@@ -56,7 +30,7 @@ function DestinationDetails() {
         const data = await getDestination(id, controller.signal);
 
         if (!controller.signal.aborted) {
-          setDestination(data);
+          setDestination(data ? normalizeDestination(data) : null);
         }
       } catch (err) {
         if (!controller.signal.aborted) {
@@ -110,11 +84,6 @@ function DestinationDetails() {
     );
   }
 
-  const style = destinationStyles[destination.slug] ?? {
-    emoji: "📍",
-    categories: [],
-  };
-
   const destinationActivities = destination.activities ?? [];
 
   const dailyCost = destination.estimated_daily_cost;
@@ -136,14 +105,14 @@ function DestinationDetails() {
           <p className="destination-tagline">{destination.tagline}</p>
 
           <div className="destination-tags">
-            {style.categories.map((category) => (
+            {destination.categories.map((category) => (
               <span key={category}>{category}</span>
             ))}
           </div>
         </div>
 
         <div className="destination-detail-art">
-          <span>{style.emoji}</span>
+          <span>{destination.emoji}</span>
         </div>
       </section>
 
@@ -245,9 +214,7 @@ function DestinationDetails() {
             <span>Estimated daily budget</span>
 
             <strong>
-              {dailyCost == null
-                ? "Not available"
-                : `KSh ${dailyCost.toLocaleString()}`}
+              {formatDailyCost(dailyCost)}
             </strong>
 
             <small>per traveler / day</small>

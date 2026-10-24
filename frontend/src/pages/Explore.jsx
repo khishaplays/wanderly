@@ -1,109 +1,23 @@
-import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
 import DestinationCard from "../components/DestinationCard";
 import SearchBar from "../components/SearchBar";
-import { experiences } from "../data/experiences";
-import { getDestinations } from "../services/destinations";
-
-const categoryBySlug = {
-  "maasai-mara": ["Safari", "Wildlife", "Culture"],
-  "diani-beach": ["Beach", "Adventure"],
-  nairobi: ["City", "Culture", "Nightlife", "Wildlife"],
-  lamu: ["Culture", "Beach"],
-  naivasha: ["Nature", "Adventure", "Wildlife"],
-  mombasa: ["Beach", "Culture", "Food"],
-};
-
-const emojiBySlug = {
-  "maasai-mara": "🦁",
-  "diani-beach": "🏖️",
-  nairobi: "🏙️",
-  lamu: "⛵",
-  naivasha: "🌿",
-  mombasa: "🌊",
-};
-
-function normalizeDestination(destination) {
-  return {
-    ...destination,
-    categories: categoryBySlug[destination.slug] ?? [],
-    emoji: emojiBySlug[destination.slug] ?? "📍",
-    estimatedDailyCost: destination.estimated_daily_cost ?? 0,
-  };
-}
+import { useDestinations } from "../hooks/useDestinations";
+import { catalogueCategories, readFilters, updateFilters, filterDestinations } from "../utils/catalogue";
 
 function Explore() {
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const { destinations, loading, error } = useDestinations();
+  const categories = catalogueCategories(destinations);
+  const { search, category: experience } = readFilters(searchParams, categories);
+  const filteredDestinations = filterDestinations(destinations, search, experience);
 
-  const selectedStyle = searchParams.get("style");
-
-  const initialExperience = selectedStyle
-    ? selectedStyle.charAt(0).toUpperCase() + selectedStyle.slice(1)
-    : "All";
-
-  const [search, setSearch] = useState("");
-  const [experience, setExperience] = useState(initialExperience);
-
-  const [destinations, setDestinations] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-
-  useEffect(() => {
-    const controller = new AbortController();
-
-    async function loadDestinations() {
-      try {
-        setLoading(true);
-        setError("");
-
-        const data = await getDestinations(controller.signal);
-
-        setDestinations(data.map(normalizeDestination));
-      } catch (err) {
-        if (!controller.signal.aborted) {
-          setError(err.message);
-        }
-      } finally {
-        if (!controller.signal.aborted) {
-          setLoading(false);
-        }
-      }
-    }
-
-    loadDestinations();
-
-    return () => controller.abort();
-  }, []);
-
-  const filteredDestinations = useMemo(() => {
-    const query = search.trim().toLowerCase();
-
-    return destinations.filter((destination) => {
-      const searchableText = [
-        destination.name,
-        destination.county,
-        destination.region,
-        destination.tagline,
-        destination.description,
-        ...destination.categories,
-      ]
-        .filter(Boolean)
-        .join(" ")
-        .toLowerCase();
-
-      const matchesSearch = query === "" || searchableText.includes(query);
-
-      const matchesExperience =
-        experience === "All" || destination.categories.includes(experience);
-
-      return matchesSearch && matchesExperience;
-    });
-  }, [destinations, search, experience]);
+  function setFilter(updates, replace = false) {
+    setSearchParams((current) => updateFilters(current, updates), { replace });
+  }
 
   function clearFilters() {
-    setSearch("");
-    setExperience("All");
+    setFilter({ q: "", category: "" });
   }
 
   return (
@@ -122,13 +36,13 @@ function Explore() {
           safari and beaches to food, culture and nightlife.
         </p>
 
-        <SearchBar value={search} onChange={setSearch} />
+        <SearchBar value={search} onChange={(value) => setFilter({ q: value }, true)} />
       </section>
 
       <section className="explore-content">
         <div className="filter-header">
           <div className="category-filters">
-            {experiences.map((item) => (
+            {["All", ...categories].map((item) => (
               <button
                 key={item}
                 type="button"
@@ -137,7 +51,8 @@ function Explore() {
                     ? "filter-button active-filter"
                     : "filter-button"
                 }
-                onClick={() => setExperience(item)}
+                aria-pressed={experience === item}
+                onClick={() => setFilter({ category: item })}
               >
                 {item}
               </button>

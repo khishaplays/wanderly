@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
-import { destinations } from "../data/destinations";
+import { useDestinations } from "../hooks/useDestinations";
+import { featuredDestinations as selectFeatured } from "../utils/catalogue";
 import DestinationCard from "../components/DestinationCard";
 
 const travelStyles = [
@@ -36,7 +37,8 @@ const travelStyles = [
 ];
 
 function Home() {
-  const featuredDestinations = destinations.slice(0, 3);
+  const { destinations, loading, error } = useDestinations();
+  const featuredDestinations = selectFeatured(destinations);
 
   return (
     <>
@@ -119,7 +121,9 @@ function Home() {
           {travelStyles.map((style) => (
             <Link
               key={style.title}
-              to={`/explore?style=${style.title.toLowerCase()}`}
+              to={["Safari", "Beach"].includes(style.title)
+                ? `/explore?category=${style.title.toLowerCase()}`
+                : "/explore"}
               className="style-card"
             >
               <span className="style-icon">{style.icon}</span>
@@ -147,11 +151,22 @@ function Home() {
           </Link>
         </div>
 
-        <div className="destination-grid">
-          {featuredDestinations.map((destination) => (
-            <DestinationCard key={destination.id} destination={destination} />
-          ))}
-        </div>
+        {loading ? (
+          <p role="status">Loading featured destinations...</p>
+        ) : error ? (
+          <div role="alert">
+            <p>We couldn't load featured destinations.</p>
+            <Link to="/explore" className="text-link">Try Explore →</Link>
+          </div>
+        ) : featuredDestinations.length === 0 ? (
+          <p>Destinations are coming soon.</p>
+        ) : (
+          <div className="destination-grid">
+            {featuredDestinations.map((destination) => (
+              <DestinationCard key={destination.id} destination={destination} />
+            ))}
+          </div>
+        )}
       </section>
     </>
   );

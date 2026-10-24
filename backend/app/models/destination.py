@@ -1,7 +1,7 @@
-from sqlalchemy import Column, Float, Integer, String, Text
+from sqlalchemy import Column, Float, ForeignKey, Integer, String, Text
 from sqlalchemy.orm import relationship
 
-from app.database import Base
+from app.base import Base
 
 
 class Destination(Base):
@@ -11,6 +11,13 @@ class Destination(Base):
     name = Column(String(150), nullable=False)
     slug = Column(String(150), unique=True, nullable=False, index=True)
     county = Column(String(100), nullable=False)
+    county_id = Column(
+        Integer,
+        ForeignKey("counties.id", name="fk_destinations_county_id_counties", ondelete="RESTRICT"),
+        nullable=True,
+        index=True,
+    )
+    county_record = relationship("County", back_populates="destinations")
     region = Column(String(100))
     description = Column(Text, nullable=False)
     tagline = Column(String(255))

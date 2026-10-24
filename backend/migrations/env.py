@@ -5,6 +5,7 @@ from alembic import context
 from app.database import Base, engine
 from app.models.destination import Destination
 from app.models.activity import Activity
+from app.models.county import County
 
 config = context.config
 
